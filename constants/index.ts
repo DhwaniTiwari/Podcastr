@@ -19,124 +19,24 @@ export const sidebarLinks = [
 export const voiceDetails = [
   {
     id: 1,
-    name: "Kore", 
+    name: "Alice", 
   },
   {
     id: 2,
-    name: "Puck", 
+    name: "Bill", 
   },
   {
     id: 3,
-    name: "Zephyr", 
+    name: "Brian", 
   },
   {
     id: 4,
-    name: "Charon", 
+    name: "Callum", 
   },
   {
     id: 5,
-    name: "Fenrir", 
+    name: "Charlie", 
   },
-  {
-    id: 6,
-    name: "Leda", 
-  },
-  {
-    id: 7,
-    name: "Orus", 
-  },
-  {
-    id: 8,
-    name: "Aoede", 
-  },
-  {
-    id: 9,
-    name: "Callirrhoe", 
-  },
-  {
-    id: 10,
-    name: "Autonoe", 
-  },
-  {
-    id: 11,
-    name: "Enceladus", 
-  },
-  {
-    id: 12,
-    name: "Lapetus",      
-  },
-  {
-    id: 13,
-    name: "Umbriel", 
-  },
-  {
-    id: 14,
-    name: "Algieba", 
-  },
-  {
-    id: 15,
-    name: "Despina", 
-  },
-  {
-    id: 16,
-    name: "Erinome", 
-  },
-  {
-    id: 17,
-    name: "Algenib", 
-  },
-  {
-    id: 18,
-    name: "Rasalgethi", 
-  },
-  {
-    id: 19,
-    name: "Laomedeia", 
-  },
-  {
-    id: 20,
-    name: "Achernar", 
-  },
-  {
-    id: 21,
-    name: "Alnilam", 
-  },
-  {
-    id: 22,
-    name: "Schedar", 
-  },
-  {
-    id: 23,
-    name: "Gacrux", 
-  },
-  {
-    id: 24,
-    name: "Pulcherrima", 
-  },
-  {
-    id: 25,
-    name: "Achird", 
-  },
-  {
-    id: 26,
-    name: "Zubenelgenubi", 
-  },
-  {
-    id: 27,
-    name: "Vindemiatrix", 
-  },
-  {
-    id: 28,
-    name: "Sadachbia", 
-  },
-  {
-    id: 29,
-    name: "Sadaltager", 
-  },
-  {
-    id: 30,
-    name: "Sulafat", 
-  } 
 ];
 
 export const podcastData = [

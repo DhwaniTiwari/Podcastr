@@ -8,8 +8,8 @@
  * @module
  */
 
+import type * as elevenlabs from "../elevenlabs.js";
 import type * as files from "../files.js";
-import type * as gemini from "../gemini.js";
 import type * as http from "../http.js";
 import type * as podcasts from "../podcasts.js";
 import type * as tasks from "../tasks.js";
@@ -30,8 +30,8 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  elevenlabs: typeof elevenlabs;
   files: typeof files;
-  gemini: typeof gemini;
   http: typeof http;
   podcasts: typeof podcasts;
   tasks: typeof tasks;
