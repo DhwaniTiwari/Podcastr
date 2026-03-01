@@ -146,6 +146,29 @@ def publish_podcast(
     
     return RedirectResponse(url="/dashboard", status_code=status.HTTP_302_FOUND)
 
+from pydantic import BaseModel
+
+class TranslateRequest(BaseModel):
+    target_language: str
+
+@router.post("/podcasts/{podcast_id}/translate")
+def translate_podcast_script(
+    podcast_id: int,
+    request: TranslateRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    from fastapi.responses import JSONResponse
+    podcast = db.query(models.Podcast).filter(models.Podcast.id == podcast_id).first()
+    if not podcast:
+        return JSONResponse(status_code=404, content={"error": "Podcast not found"})
+        
+    try:
+        translated_text = services.translate_text_service(podcast.script, request.target_language)
+        return {"translated_text": translated_text}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
 @router.get("/podcasts/{podcast_id}", response_class=HTMLResponse)
 def podcast_detail(
     request: Request, 

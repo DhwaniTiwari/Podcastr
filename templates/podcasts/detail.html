@@ -171,17 +171,36 @@
             </div>
 
             <!-- Transcription Section -->
-            <div class="space-y-6">
-                <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+            <div class="space-y-6 relative">
+                <div class="flex items-center justify-between border-b border-gray-800 pb-4 flex-wrap gap-4">
                     <h3 class="font-bold text-xl text-white">Transcription</h3>
-                    <button onclick="navigator.clipboard.writeText(document.getElementById('script-content').innerText)"
-                        class="text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-white transition-colors">
-                        Copy Text
-                    </button>
+
+                    <!-- Translation Controls -->
+                    <div class="flex items-center gap-2">
+                        <select id="translate-lang"
+                            class="bg-[#18181b] text-sm text-gray-300 border border-[#3f3f46] rounded-md px-2 py-1 outline-none focus:border-orange-500">
+                            <option value="original">Original</option>
+                            <option value="Spanish">Spanish</option>
+                            <option value="French">French</option>
+                            <option value="German">German</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Japanese">Japanese</option>
+                        </select>
+                        <button onclick="translateScript('{{ podcast.id }}')" id="translate-btn"
+                            class="text-xs bg-orange-600/20 text-orange-500 hover:bg-orange-600/40 px-3 py-1.5 rounded-md font-bold uppercase tracking-wider transition-colors">
+                            Translate
+                        </button>
+                        <button
+                            onclick="navigator.clipboard.writeText(document.getElementById('script-content').innerText)"
+                            class="text-xs font-bold uppercase tracking-wider text-gray-500 hover:text-white transition-colors ml-2">
+                            Copy Text
+                        </button>
+                    </div>
                 </div>
 
-                <article id="script-content"
-                    class="prose prose-invert max-w-none text-gray-400 leading-relaxed space-y-6 whitespace-pre-line text-base font-sans">
+                <!-- Loading Overlay logic inside script -->
+                <article id="script-content" data-original="{{ podcast.script | escape }}"
+                    class="prose prose-invert max-w-none text-gray-400 leading-relaxed space-y-6 whitespace-pre-line text-base font-sans relative">
                     {{ podcast.script | trim }}
                 </article>
             </div>
@@ -427,6 +446,45 @@
             }
         } catch (e) {
             alert('Network error: ' + e);
+        }
+    }
+
+    // TRANSLATION LOGIC
+    async function translateScript(podcastId) {
+        const langSelect = document.getElementById('translate-lang');
+        const lang = langSelect.value;
+        const scriptContent = document.getElementById('script-content');
+        const translateBtn = document.getElementById('translate-btn');
+
+        if (lang === 'original') {
+            scriptContent.innerText = scriptContent.getAttribute('data-original');
+            return;
+        }
+
+        const originalBtnText = translateBtn.innerText;
+        translateBtn.innerText = "Translating...";
+        translateBtn.disabled = true;
+        translateBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        try {
+            const response = await fetch(`/podcasts/${podcastId}/translate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ target_language: lang })
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                scriptContent.innerText = data.translated_text;
+            } else {
+                alert('Error translating: ' + (data.error || 'Unknown error'));
+            }
+        } catch (e) {
+            alert('Network error during translation: ' + e);
+        } finally {
+            translateBtn.innerText = originalBtnText;
+            translateBtn.disabled = false;
+            translateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         }
     }
 

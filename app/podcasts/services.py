@@ -1,5 +1,5 @@
 # from app.ai.google_service import generate_podcast_script
-from app.ai.groq_service import generate_podcast_script
+from app.ai.groq_service import generate_podcast_script, translate_text
 from app.tts.edge_service import generate_audio_from_text
 import os
 import uuid
@@ -9,3 +9,6 @@ def generate_script_content(topic: str) -> str:
 
 def generate_audio_content(script: str, output_path: str):
     return generate_audio_from_text(script, output_path)
+
+def translate_text_service(text: str, target_language: str) -> str:
+    return translate_text(text, target_language)
