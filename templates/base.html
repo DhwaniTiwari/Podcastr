@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Podcastr{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/styles.css?v=3">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module">
+        import * as Turbo from 'https://esm.sh/@hotwired/turbo';
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#F97316',
+                        card: '#1C1F26',
+                        background: '#101114'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar (Only for logged in users) -->
+        {% if user %}
+        <aside class="sidebar">
+            <a href="/dashboard" class="logo-container">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="24" height="24" rx="6" fill="#F97316" />
+                    <path d="M12 6V18M8 10V14M16 9V15" stroke="white" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <div class="logo-text">Podcastr</div>
+            </a>
+
+            <nav class="nav-menu">
+                <a href="/dashboard" class="nav-item">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Home
+                </a>
+                <a href="/discover" class="nav-item">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    Discover
+                </a>
+                <a href="/create" class="nav-item">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                    Create Podcast
+                </a>
+
+                <!-- Upgrade Option -->
+                <a href="/payment/upgrade" class="nav-item" style="color: #F97316; font-weight: 600;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                        </path>
+                    </svg>
+                    Upgrade to Pro
+                </a>
+
+                <a href="/auth/logout" class="nav-item" style="margin-top: auto;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1-2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Logout
+                </a>
+
+                <a href="/profile" class="user-profile">
+                    <div class="avatar">
+                        {{ user.email[0].upper() }}
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-weight: 600; font-size: 0.9rem;">My Profile</span>
+                        <span
+                            style="font-size: 0.8rem; color: var(--text-muted); width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{
+                            user.full_name or user.email }}</span>
+                    </div>
+                </a>
+            </nav>
+        </aside>
+        {% endif %}
+
+        <!-- Main Content -->
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- Global Player -->
+    <div class="bottom-player" id="global-player" data-turbo-permanent
+        style="display: none; background: rgba(23, 25, 30, 0.95); backdrop-filter: blur(16px); border-top: 1px solid #2D3039; padding: 0 2rem; align-items: center; justify-content: space-between; box-shadow: 0 -10px 40px rgba(0,0,0,0.6); z-index: 1000; height: 90px; position: fixed; bottom: 0; left: 0; right: 0;">
+
+        <!-- INFO -->
+        <div style="display: flex; align-items: center; gap: 1.25rem; width: 300px;">
+            <img src="" id="player-img"
+                style="width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background: #333; border: 1px solid #2D3039; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+            <div style="overflow: hidden;">
+                <div id="player-title"
+                    style="font-weight: 600; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; margin-bottom: 2px;">
+                    Podcast Title</div>
+                <div id="player-author" style="font-size: 0.85rem; color: #9CA3AF;">Author</div>
+            </div>
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="player-controls">
+            <!-- Backward 10s -->
+            <button class="control-btn" onclick="skip(-10)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 17l-9-5 9-5v10zm-9-5h20" />
+                </svg>
+            </button>
+
+            <!-- Play/Pause -->
+            <button class="control-btn play-btn" id="play-pause-btn" onclick="togglePlay()">
+                <svg id="play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <svg id="pause-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"
+                    style="display: none;">
+                    <rect x="6" y="4" width="4" height="16"></rect>
+                    <rect x="14" y="4" width="4" height="16"></rect>
+                </svg>
+            </button>
+
+            <!-- Forward 10s -->
+            <button class="control-btn" onclick="skip(10)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M13 17l9-5-9-5v10zm9-5H2" />
+                </svg>
+            </button>
+
+            <!-- Progress -->
+            <div class="progress-container">
+                <span id="current-time">0:00</span>
+                <div class="progress-bar-wrapper" onclick="seek(event)">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+                <span id="duration">0:00</span>
+            </div>
+        </div>
+
+        <!-- VOLUME/EXTRAS -->
+        <div style="width: 300px; display: flex; justify-content: flex-end; align-items: center; gap: 1rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+        </div>
+
+        <!-- Hidden Audio Element -->
+        <audio id="audio-element"></audio>
+    </div>
+
+    <script>
+        if (!window.playerInitialized) {
+            window.playerInitialized = true;
+
+            window.playPodcast = function (url, title, author, image) {
+                const playerPanel = document.getElementById('global-player');
+                const audio = document.getElementById('audio-element');
+
+                playerPanel.style.display = 'flex';
+                document.getElementById('player-title').textContent = title;
+                document.getElementById('player-author').textContent = author;
+                document.getElementById('player-img').src = image || '/static/default_cover.png';
+
+                console.log("Setting audio src to:", url);
+                audio.src = url;
+                audio.play().then(() => {
+                    updatePlayBtn(true);
+                }).catch(e => {
+                    console.error("Playback failed:", e);
+                    alert("Playback failed: " + e.message + "\nCheck if your browser allows autoplay.");
+                });
+            };
+
+            window.togglePlay = function () {
+                const audio = document.getElementById('audio-element');
+                if (audio.paused) {
+                    audio.play();
+                    updatePlayBtn(true);
+                } else {
+                    audio.pause();
+                    updatePlayBtn(false);
+                }
+            };
+
+            window.updatePlayBtn = function (isPlaying) {
+                const playIcon = document.getElementById('play-icon');
+                const pauseIcon = document.getElementById('pause-icon');
+                if (isPlaying) {
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                } else {
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                }
+            };
+
+            window.skip = function (seconds) {
+                const audio = document.getElementById('audio-element');
+                audio.currentTime += seconds;
+            };
+
+            window.seek = function (e) {
+                const audio = document.getElementById('audio-element');
+                const width = e.currentTarget.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                audio.currentTime = (clickX / width) * duration;
+            };
+
+            function formatTime(seconds) {
+                if (!seconds) return "0:00";
+                const m = Math.floor(seconds / 60);
+                const s = Math.floor(seconds % 60);
+                return `${m}:${s < 10 ? '0' : ''}${s}`;
+            }
+
+            // Bind events once
+            const audioEl = document.getElementById('audio-element');
+
+            audioEl.addEventListener('timeupdate', () => {
+                if (!audioEl.duration) return;
+                const percent = (audioEl.currentTime / audioEl.duration) * 100;
+                const progressFill = document.getElementById('progress-fill');
+                const currentTimeEl = document.getElementById('current-time');
+                const durationEl = document.getElementById('duration');
+
+                if (progressFill) progressFill.style.width = `${percent}%`;
+                if (currentTimeEl) currentTimeEl.textContent = formatTime(audioEl.currentTime);
+                if (durationEl) durationEl.textContent = formatTime(audioEl.duration);
+            });
+
+            audioEl.addEventListener('ended', () => {
+                updatePlayBtn(false);
+                const progressFill = document.getElementById('progress-fill');
+                if (progressFill) progressFill.style.width = '0%';
+            });
+
+            audioEl.addEventListener('error', (e) => {
+                const error = e.target.error;
+                let msg = "Unknown Error";
+                if (error) {
+                    switch (error.code) {
+                        case error.MEDIA_ERR_ABORTED: msg = "Aborted"; break;
+                        case error.MEDIA_ERR_NETWORK: msg = "Network Error (Check URL/Server)"; break;
+                        case error.MEDIA_ERR_DECODE: msg = "Decode Error (Corrupt File)"; break;
+                        case error.MEDIA_ERR_SRC_NOT_SUPPORTED: msg = "Source Not Supported"; break;
+                    }
+                }
+                console.error("Audio Source Error:", e);
+                alert("Audio Failed to Load: " + msg + "\nURL: " + audioEl.src);
+            });
+        }
+    </script>
+</body>
+
+</html>

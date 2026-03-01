@@ -1,0 +1,53 @@
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from app.config import settings
+import os
+
+app = FastAPI(title="AI SaaS Podcastr")
+
+# Ensure static and templates directories exist
+os.makedirs("static", exist_ok=True)
+os.makedirs("templates", exist_ok=True)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
+
+from app.auth import routes as auth_routes
+from app.database import engine, Base
+from app.auth import models as auth_models
+from app.podcasts import models as podcast_models
+
+# Create Tables
+Base.metadata.create_all(bind=engine)
+
+from app.podcasts import routes as podcast_routes
+from app.payments import routes as payment_routes
+from app.profile import routes as profile_routes
+
+app.include_router(auth_routes.router)
+app.include_router(podcast_routes.router)
+app.include_router(payment_routes.router)
+app.include_router(profile_routes.router)
+
+from fastapi import HTTPException
+from fastapi.responses import RedirectResponse
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    if exc.status_code == 401:
+        response = RedirectResponse(url="/auth/login")
+        response.delete_cookie("access_token") 
+        return response
+    # Return default JSON response for other errors
+    from fastapi.responses import JSONResponse
+    return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
+
+
+
+@app.get("/", response_class=HTMLResponse)
+async def root(request: Request):
+    return templates.TemplateResponse("home.html", {"request": request})
+

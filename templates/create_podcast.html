@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; margin-top: 2rem;">
+    <h1 style="margin-bottom: 0.5rem;">Create a Podcast</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">Enter a topic, and our AI will generate a script for you.
+    </p>
+
+    <form action="/create/generate" method="post" class="card" data-turbo="false"
+        onsubmit="document.getElementById('gen-btn').innerText = 'Generating... (Please Wait)'; document.getElementById('gen-btn').disabled = true;"
+        style="background: var(--card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border);">
+
+        {% if error %}
+        <div
+            style="background: rgba(255, 0, 0, 0.1); color: #ff4444; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border: 1px solid rgba(255, 0, 0, 0.2);">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label for="topic">What should the podcast be about?</label>
+            <input type="text" id="topic" name="topic" class="form-control" value="{{ topic or '' }}"
+                placeholder="e.g. The future of AI in healthcare" required>
+        </div>
+
+        <button type="submit" id="gen-btn" class="btn" style="width: 100%;">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            </svg>
+            Generate Script
+        </button>
+    </form>
+</div>
+{% endblock %}

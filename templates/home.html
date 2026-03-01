@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Podcastr - AI Podcast Generator{% endblock %}
+
+{% block content %}
+<div class="hero-section" style="text-align: center; padding: 4rem 0;">
+    <h1
+        style="font-size: 3rem; margin-bottom: 1rem; background: linear-gradient(to right, #A78BFA, #F472B6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+        Turn Ideas into Podcasts
+    </h1>
+    <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2rem;">
+        Generate professional podcasts instantly using AI. Enter a topic, get a script and voiceover in seconds.
+    </p>
+
+    {% if user %}
+    <a href="/dashboard" class="btn" style="padding: 1rem 2rem; font-size: 1.1rem;">Go to Dashboard</a>
+    {% else %}
+    <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="/auth/register" class="btn" style="padding: 1rem 2rem; font-size: 1.1rem;">Get Started Free</a>
+        <a href="/auth/login" class="btn btn-secondary"
+            style="padding: 1rem 2rem; font-size: 1.1rem; background-color: var(--card);">Login</a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="features-grid"
+    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 4rem;">
+    <div class="card"
+        style="background: var(--card); padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--border);">
+        <h3 style="margin-bottom: 0.5rem;">🎙️ AI Script Writing</h3>
+        <p style="color: var(--text-muted);">Our advanced AI writes engaging scripts for any topic you choose.</p>
+    </div>
+    <div class="card"
+        style="background: var(--card); padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--border);">
+        <h3 style="margin-bottom: 0.5rem;">🗣️ Realistic Voices</h3>
+        <p style="color: var(--text-muted);">Powered by Edge TTS for naturally fast speech generation.</p>
+    </div>
+    <div class="card"
+        style="background: var(--card); padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--border);">
+        <h3 style="margin-bottom: 0.5rem;">⚡ Instant Generation</h3>
+        <p style="color: var(--text-muted);">Get your podcast ready in minutes, not days.</p>
+    </div>
+</div>
+{% endblock %}

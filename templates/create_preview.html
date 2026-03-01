@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto; margin-top: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div>
+            <h1 style="margin-bottom: 0.5rem;">Review & Publish</h1>
+            <p style="color: var(--text-muted);">Review the generated script and add details.</p>
+        </div>
+    </div>
+
+    <form action="/create/publish" method="post" enctype="multipart/form-data" style="display: grid; gap: 2rem;">
+
+        <!-- Script Editor -->
+        <div style="background: var(--card); padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--border);">
+            <div class="form-group">
+                <label for="script">AI Generated Script (Editable)</label>
+                <textarea id="script" name="script" class="form-control"
+                    style="min-height: 300px; line-height: 1.6; font-family: monospace;"
+                    required>{{ script }}</textarea>
+            </div>
+        </div>
+
+        <!-- Metadata -->
+        <div style="background: var(--card); padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--border);">
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label for="title">Podcast Title</label>
+                <input type="text" id="title" name="title" class="form-control" value="{{ topic }} Podcast" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" rows="3">{{ topic }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="thumbnail">Custom Thumbnail (Optional)</label>
+                <input type="file" id="thumbnail" name="thumbnail" class="form-control" accept="image/*">
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+            <a href="/create" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn">
+                Publish Podcast
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

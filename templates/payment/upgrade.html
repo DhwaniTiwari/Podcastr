@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Upgrade Plan - Podcastr{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto; padding-top: 2rem;">
+    <div style="text-align: center; margin-bottom: 4rem;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Choose Your Plan</h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem;">Unlock the full potential of AI-generated audio.</p>
+    </div>
+
+    <div class="pricing-grid">
+
+        <!-- FREE PLAN -->
+        <div class="plan-card">
+            <div class="plan-header">
+                <h3 class="plan-title free">Free</h3>
+                <div class="price">₹0 <span>/ month</span></div>
+            </div>
+
+            <ul class="plan-features">
+                <li><span style="color: #10B981;">✓</span> 3 podcasts / month</li>
+                <li><span style="color: #10B981;">✓</span> Max 5 minutes per podcast</li>
+                <li><span style="color: #10B981;">✓</span> Script + Audio generation</li>
+                <li><span style="color: #10B981;">✓</span> Personal use only</li>
+            </ul>
+
+            <button disabled class="btn btn-secondary">Current Plan</button>
+        </div>
+
+        <!-- PRO PLAN -->
+        <div class="plan-card plan-pro">
+            <div class="badge">MOST POPULAR</div>
+
+            <div class="plan-header">
+                <h3 class="plan-title pro">Pro</h3>
+                <div class="price">₹399 <span>/ month</span></div>
+            </div>
+
+            <ul class="plan-features">
+                <li><span style="color: #F97316;">✓</span> 30 podcasts / month</li>
+                <li><span style="color: #F97316;">✓</span> Max 20 minutes per podcast</li>
+                <li><span style="color: #F97316;">✓</span> Better voice quality</li>
+                <li><span style="color: #F97316;">✓</span> Faster generation</li>
+                <li><span style="color: #F97316;">✓</span> Commercial usage allowed</li>
+            </ul>
+
+            <button onclick="upgradeSubscription()" class="btn"
+                style="width: 100%; justify-content: center; cursor: pointer;">Upgrade to Pro</button>
+        </div>
+
+        <!-- ENTERPRISE PLAN -->
+        <div class="plan-card">
+            <div class="plan-header">
+                <h3 class="plan-title" style="color: white;">Enterprise</h3>
+                <div class="price">Custom</div>
+            </div>
+
+            <ul class="plan-features">
+                <li><span style="color: white;">✓</span> Unlimited podcasts</li>
+                <li><span style="color: white;">✓</span> Team access</li>
+                <li><span style="color: white;">✓</span> Priority support</li>
+            </ul>
+
+            <a href="mailto:sales@podcastr.ai" class="btn btn-secondary">Contact Sales</a>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    async function upgradeSubscription() {
+        try {
+            const btn = document.querySelector('.plan-pro .btn');
+            const originalText = btn.innerText;
+            btn.innerText = 'Processing...';
+            btn.disabled = true;
+
+            // 1. Create Order
+            const response = await fetch('/payment/create-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ plan: 'pro' })
+            });
+            const order = await response.json();
+
+            if (!response.ok) throw new Error(order.detail || 'Order creation failed');
+
+            // 2. Open Razorpay
+            const options = {
+                key: order.key,
+                amount: order.amount,
+                currency: order.currency,
+                name: order.name,
+                description: order.description,
+                order_id: order.order_id,
+                prefill: order.prefill,
+                handler: async function (response) {
+                    // 3. Verify Payment
+                    const verifyRes = await fetch('/payment/verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature
+                        })
+                    });
+
+                    const verifyData = await verifyRes.json();
+                    if (verifyRes.ok) {
+                        // Success
+                        window.location.href = '/dashboard?upgraded=true';
+                    } else {
+                        alert('Verification failed: ' + verifyData.detail);
+                    }
+                },
+                theme: { color: "#F97316" },
+                modal: {
+                    ondismiss: function () {
+                        btn.innerText = originalText;
+                        btn.disabled = false;
+                    }
+                }
+            };
+            const rzp1 = new Razorpay(options);
+            rzp1.open();
+
+        } catch (err) {
+            console.error(err);
+            alert('Error: ' + err.message);
+            document.querySelector('.plan-pro .btn').innerText = 'Upgrade to Pro';
+            document.querySelector('.plan-pro .btn').disabled = false;
+        }
+    }
+</script>
+{% endblock %}

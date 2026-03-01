@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="display: flex; gap: 2rem;">
+    <!-- Main Feed -->
+    <div style="flex: 1; padding-right: 1rem;">
+
+
+        <!-- Trending -->
+        <h2 style="margin-bottom: 1rem; font-size: 1.25rem;">Trending Podcasts</h2>
+        <div class="grid-container" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+            {% for podcast in top_podcasts %}
+            <div class="podcast-card group relative">
+                <a href="/podcasts/{{ podcast.id }}" class="block">
+                    <img src="{{ podcast.image_path or '/static/default_cover.png' }}" class="podcast-img"
+                        onerror="this.src='https://placehold.co/400x400/1C1F26/FFF?text=AUDIO'">
+                    <div class="podcast-title">{{ podcast.title }}</div>
+                    <div class="podcast-sub">{{ podcast.views }} views</div>
+                </a>
+            </div>
+            {% else %}
+            <p style="color: var(--text-muted);">No trending podcasts yet.</p>
+            {% endfor %}
+        </div>
+
+
+    </div>
+
+    <!-- Right Sidebar (Top Podcasters) -->
+    <aside class="right-sidebar">
+        <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem;">Top Podcasters</h3>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+            {% for user in top_users %}
+            <a href="/profile/{{ user.id }}"
+                style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: inherit; width: 100%;">
+                <div class="avatar" style="width: 40px; height: 40px; font-size: 0.9rem;">{{ user.email[0].upper() }}
+                </div>
+                <div style="flex: 1; overflow: hidden;">
+                    <div style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{
+                        user.full_name or user.email.split('@')[0] }}</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">{{ user.podcasts|length }} Podcasts</div>
+                </div>
+            </a>
+            {% else %}
+            <p style="color: var(--text-muted);">No data yet.</p>
+            {% endfor %}
+        </div>
+    </aside>
+</div>
+{% endblock %}

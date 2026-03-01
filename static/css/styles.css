@@ -1,0 +1,471 @@
+:root {
+    --primary: #F97316;
+    /* Orange from screenshot */
+    --primary-hover: #EA580C;
+    --background: #101114;
+    /* Darker bg */
+    --card: #1C1F26;
+    /* Slightly lighter for cards */
+    --sidebar: #15171C;
+    --text: #FFFFFF;
+    --text-muted: #9CA3AF;
+    --border: #2D3039;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4B5563;
+}
+
+/* Layout */
+.app-container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    flex-shrink: 0;
+}
+
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    padding-bottom: 100px;
+    /* Space for player */
+}
+
+/* Sidebar Components */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+    text-decoration: none;
+    color: white;
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.nav-item svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* User Profile in Sidebar */
+.user-profile {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background-color: var(--card);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+/* Components */
+.search-bar {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-input {
+    background: transparent;
+    border: none;
+    color: white;
+    width: 100%;
+    outline: none;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.podcast-card {
+    background-color: var(--card);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: transform 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.podcast-card:hover {
+    transform: translateY(-4px);
+}
+
+.podcast-img {
+    width: 100%;
+    aspect-ratio: 1;
+    background-color: #2D3039;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    object-fit: cover;
+}
+
+.podcast-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.podcast-sub {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+/* Fixed Bottom Player */
+.bottom-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 90px;
+    background-color: rgba(21, 23, 28, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    z-index: 100;
+    justify-content: space-between;
+}
+
+/* Utilities */
+.btn {
+    background-color: var(--primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.btn-secondary:hover {
+    border-color: var(--text-muted);
+}
+
+/* Form Styles */
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    color: white;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* Top Podcasters Sidebar (Right) */
+.right-sidebar {
+    width: 300px;
+    padding-left: 2rem;
+    border-left: 1px solid var(--border);
+}
+
+/* UPGRADE PAGE STYLES */
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    align-items: stretch;
+}
+
+/* CARD */
+.plan-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 520px;
+    /* KEY LINE */
+    position: relative;
+}
+
+/* PRO CARD */
+.plan-pro {
+    background: linear-gradient(145deg, #1C1F26 0%, #2A1C15 100%);
+    border-color: #F97316;
+}
+
+/* BADGE (does NOT affect layout) */
+.badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #F97316;
+    color: #fff;
+    padding: 0.25rem 1rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* HEADER */
+.plan-header {
+    margin-bottom: 1.5rem;
+}
+
+.plan-title {
+    margin-bottom: 0.5rem;
+}
+
+.plan-title.free {
+    color: #A78BFA;
+}
+
+.plan-title.pro {
+    color: #F97316;
+}
+
+/* PRICE */
+.price {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.price span {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* FEATURES */
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+    /* CRITICAL */
+}
+
+.plan-features li {
+    margin-bottom: 1rem;
+}
+
+/* BUTTONS */
+.plan-card .btn {
+    margin-top: auto;
+    /* CRITICAL */
+    width: 100%;
+    text-align: center;
+}
+
+/* CUSTOM AUDIO PLAYER */
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+    max-width: 600px;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.control-btn:hover {
+    color: var(--primary);
+}
+
+.play-btn {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.play-btn:hover {
+    background: var(--primary-hover);
+    transform: scale(1.05);
+}
+
+.progress-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.progress-bar-wrapper {
+    flex: 1;
+    height: 4px;
+    background: #2D3039;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 2px;
+    width: 0%;
+    position: relative;
+}
+
+.progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    right: -4px;
+    top: -3px;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.progress-bar-wrapper:hover .progress-bar-fill::after {
+    opacity: 1;
+}

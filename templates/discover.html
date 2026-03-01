@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="section-header">
+    <h1>Discover</h1>
+</div>
+
+<form action="/discover" method="get" style="margin-bottom: 2rem;">
+    <div class="search-bar">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" name="q" class="search-input" placeholder="Search for podcasts..." value="{{ q }}">
+        {% if q %}
+        <a href="/discover" style="color: var(--text-muted); text-decoration: none;">✕</a>
+        {% endif %}
+    </div>
+</form>
+
+{% if q %}
+<h2 style="margin-bottom: 1rem;">Search Results for "{{ q }}"</h2>
+{% else %}
+<h2 style="margin-bottom: 1rem;">Trending Now</h2>
+{% endif %}
+
+<div class="grid-container">
+    {% for podcast in podcasts %}
+    <div class="podcast-card group relative">
+        <a href="/podcasts/{{ podcast.id }}" class="block">
+            <img src="{{ podcast.image_path or '/static/default_cover.png' }}" class="podcast-img"
+                onerror="this.src='https://placehold.co/400x400/1C1F26/FFF?text=AUDIO'">
+            <div class="podcast-title">{{ podcast.title }}</div>
+            <div class="podcast-sub">{{ podcast.views }} views</div>
+        </a>
+        <!-- Play Overlay -->
+        <div
+            class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+            <button
+                onclick="playPodcast('/static/audio/{{ podcast.audio_path.split('/')[-1] }}', '{{ podcast.title }}', 'User {{ podcast.user_id }}', '{{ podcast.image_path or '/static/default_cover.png' }}')"
+                class="bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-full pointer-events-auto transform hover:scale-110 transition-transform">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+    {% else %}
+    <p style="color: var(--text-muted);">No podcasts found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

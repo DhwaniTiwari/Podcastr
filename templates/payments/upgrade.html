@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Upgrade - Podcastr{% endblock %}
+
+{% block content %}
+<div class="card auth-container" style="text-align: center;">
+    <h2>Upgrade to Pro</h2>
+    <p class="text-muted">Generate unlimited podcasts with premium voices.</p>
+
+    <div style="margin: 2rem 0;">
+        <h1>₹99 <span style="font-size: 1rem; color: var(--text-muted)">/ month</span></h1>
+        <ul style="list-style: none; padding: 0; margin-top: 1rem; color: var(--text-muted);">
+            <li>✓ Unlimited Generation</li>
+            <li>✓ High Quality Audio</li>
+            <li>✓ Priority Support</li>
+        </ul>
+    </div>
+
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <button id="pay-btn" class="btn" style="width: 100%; font-size: 1.1rem;">Subscribe Now</button>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.getElementById('pay-btn').onclick = async function (e) {
+        e.preventDefault();
+
+        const response = await fetch('/payments/create-order', { method: 'POST' });
+        const order = await response.json();
+
+        var options = {
+            "key": "{{ key_id }}",
+            "amount": order.amount,
+            "currency": order.currency,
+            "name": "Podcastr AI",
+            "description": "Pro Subscription",
+            "order_id": order.id,
+            "callback_url": "/payments/success",
+            "prefill": {
+                "email": "{{ user.email }}"
+            },
+            "theme": {
+                "color": "#8B5CF6"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+</script>
+{% endblock %}

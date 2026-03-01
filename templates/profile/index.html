@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - Podcastr{% endblock %}
+
+{% block content %}
+<div class="relative w-full max-w-7xl mx-auto space-y-12 pb-20">
+
+    <!-- HERO SECTION -->
+    <div class="relative w-full h-80 rounded-3xl overflow-hidden shadow-2xl group">
+        <!-- Blurred Background -->
+        <div class="absolute inset-0 bg-gradient-to-r from-orange-600/30 to-purple-600/30 backdrop-blur-3xl"></div>
+        <div class="absolute inset-0 bg-[#18181b]/40"></div>
+
+        <!-- Content -->
+        <div class="relative z-10 h-full flex flex-col items-center justify-center text-center p-6 md:p-12 space-y-6">
+
+            <!-- Avatar -->
+            <div class="relative">
+                <div
+                    class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-3xl md:text-5xl font-bold text-white shadow-xl ring-4 ring-white/10">
+                    {{ user.email[0].upper() }}
+                </div>
+                <div
+                    class="absolute bottom-0 right-0 bg-black/80 backdrop-blur-md text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded-full border border-white/10 uppercase tracking-wider">
+                    {{ user.subscription_plan }}
+                </div>
+            </div>
+
+            <!-- Text -->
+            <div class="space-y-2">
+                <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight">{{ user.full_name or 'Podcastr
+                    User' }}</h1>
+                <p class="text-gray-300 font-medium">{{ user.email }}</p>
+            </div>
+
+            <!-- Edit Button -->
+            <button onclick="document.getElementById('edit-profile-modal').classList.remove('hidden')"
+                class="bg-white/10 hover:bg-white/20 text-white border border-white/10 px-6 py-2 rounded-full font-medium transition-all backdrop-blur-md flex items-center gap-2 text-sm">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                </svg>
+                Edit Profile
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENT STACK -->
+    <div class="space-y-16 px-4 md:px-0">
+
+        <!-- SECTION 1: My Playlists -->
+        <div class="space-y-8">
+            <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center text-orange-500">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                    </span>
+                    My Playlists
+                </h2>
+                <button onclick="document.getElementById('create-playlist-modal').classList.remove('hidden')"
+                    class="text-sm font-bold text-orange-500 hover:text-orange-400 transition-colors">
+                    + New Playlist
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for playlist in playlists %}
+                <a href="/profile/playlists/{{ playlist.id }}"
+                    class="group relative bg-[#1c1f26]/50 backdrop-blur-sm border border-white/5 rounded-2xl p-5 hover:bg-white/5 transition-all hover:scale-[1.02] duration-300 cursor-pointer overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div class="relative z-10 flex flex-col h-full justify-between space-y-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500 mb-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M9 18V5l12-2v13"></path>
+                                <circle cx="6" cy="18" r="3"></circle>
+                                <circle cx="18" cy="16" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-white group-hover:text-orange-500 transition-colors">{{
+                                playlist.title }}</h3>
+                            <p class="text-sm text-gray-500">{{ playlist.podcasts|length }} podcasts</p>
+                        </div>
+                    </div>
+                </a>
+                {% else %}
+                <div
+                    class="col-span-full py-12 text-center text-gray-500 bg-[#1c1f26]/30 border border-white/5 rounded-2xl border-dashed">
+                    No playlists yet. Start curating your favorites!
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- SECTION 2: My Podcasts -->
+        <div class="space-y-8">
+            <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                <span class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-500">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                    </svg>
+                </span>
+                My Podcasts
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {% for podcast in podcasts %}
+                <div
+                    class="group relative aspect-square rounded-2xl overflow-hidden bg-gray-800 shadow-lg cursor-pointer">
+                    <img src="{{ podcast.image_path or '/static/default_cover.png' }}?v={{ range(1, 1000) | random }}"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4 opacity-100 transition-opacity">
+                        <h4 class="font-bold text-white text-sm line-clamp-1">{{ podcast.title }}</h4>
+                        <div class="flex justify-between items-center mt-1">
+                            <span class="text-[10px] text-gray-400">{{ podcast.created_at.strftime('%b %Y') }}</span>
+                            <!-- Hover Actions -->
+                            <div
+                                class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-300">
+                                <a href="/podcasts/{{ podcast.id }}"
+                                    class="bg-white text-black p-1.5 rounded-full hover:scale-110 transition-transform">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </a>
+                                <form action="/profile/delete-podcast/{{ podcast.id }}" method="POST"
+                                    onsubmit="return confirm('Delete this podcast?');" class="inline">
+                                    <button type="submit"
+                                        class="bg-red-500/80 text-white p-1.5 rounded-full hover:bg-red-600 transition-colors">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path
+                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-gray-500 text-sm col-span-full">No podcasts created yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div id="edit-profile-modal"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div
+        class="bg-[#18181b] w-full max-w-md rounded-3xl border border-white/10 shadow-2xl p-6 relative overflow-hidden">
+        <!-- Close -->
+        <button onclick="document.getElementById('edit-profile-modal').classList.add('hidden')"
+            class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+
+        <h3 class="text-2xl font-bold text-white mb-6">Edit Profile</h3>
+
+        <form action="/profile/update" method="POST" class="space-y-6">
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-400">Full Name</label>
+                <input type="text" name="full_name" value="{{ user.full_name or '' }}"
+                    class="w-full bg-[#27272a] border border-[#3f3f46] rounded-xl px-4 py-3 text-white focus:border-orange-500 focus:bg-[#3f3f46] outline-none transition-colors">
+            </div>
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-400">Email (Read-only)</label>
+                <input type="text" value="{{ user.email }}" disabled
+                    class="w-full bg-[#27272a]/50 border border-[#3f3f46]/50 rounded-xl px-4 py-3 text-gray-500 cursor-not-allowed">
+            </div>
+
+            <button type="submit"
+                class="w-full bg-white text-black font-bold py-3 rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg hover:shadow-orange-500/20">
+                Save Changes
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- CREATE PLAYLIST MODAL -->
+<div id="create-playlist-modal"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div class="bg-[#18181b] w-full max-w-sm rounded-3xl border border-white/10 shadow-2xl p-6 relative">
+        <button onclick="document.getElementById('create-playlist-modal').classList.add('hidden')"
+            class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+
+        <h3 class="text-xl font-bold mb-4 text-white">New Playlist</h3>
+        <form action="/profile/playlists/create" method="POST" class="space-y-4">
+            <input type="text" name="title" placeholder="Playlist Name" required autofocus
+                class="w-full bg-[#27272a] border border-[#3f3f46] rounded-xl px-4 py-3 text-white focus:border-orange-500 outline-none">
+            <button type="submit"
+                class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 rounded-xl transition-colors">
+                Create
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
