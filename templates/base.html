@@ -113,8 +113,8 @@
     <div class="bottom-player" id="global-player" data-turbo-permanent
         style="display: none; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(16px); border-top: 1px solid #E5E7EB; padding: 0 2rem; align-items: center; justify-content: space-between; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); z-index: 1000; height: 90px; position: fixed; bottom: 0; left: 0; right: 0;">
 
-        <!-- INFO -->
-        <div style="display: flex; align-items: center; gap: 1.25rem; width: 300px;">
+        <!-- INFO (clickable → goes to podcast detail page) -->
+        <a id="player-info-link" href="#" style="display: flex; align-items: center; gap: 1.25rem; width: 300px; text-decoration: none; cursor: pointer;" title="Go to podcast">
             <img src="" id="player-img"
                 style="width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background: #E5E7EB; border: 1px solid #E5E7EB; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
             <div style="overflow: hidden;">
@@ -123,7 +123,7 @@
                     Podcast Title</div>
                 <div id="player-author" style="font-size: 0.85rem; color: var(--text-muted);">Author</div>
             </div>
-        </div>
+        </a>
 
         <!-- CONTROLS -->
         <div class="player-controls">
@@ -182,14 +182,20 @@
         if (!window.playerInitialized) {
             window.playerInitialized = true;
 
-            window.playPodcast = function (url, title, author, image) {
+            window.playPodcast = function (url, title, author, image, podcastId) {
                 const playerPanel = document.getElementById('global-player');
                 const audio = document.getElementById('audio-element');
+                const infoLink = document.getElementById('player-info-link');
 
                 playerPanel.style.display = 'flex';
                 document.getElementById('player-title').textContent = title;
                 document.getElementById('player-author').textContent = author;
                 document.getElementById('player-img').src = image || '/static/default_cover.png';
+
+                // Make the info section link to the podcast detail page
+                if (infoLink && podcastId) {
+                    infoLink.href = '/podcasts/' + podcastId;
+                }
 
                 console.log("Setting audio src to:", url);
                 audio.src = url;

@@ -125,6 +125,7 @@
                             data-title="{{ podcast.title }}"
                             data-author="{{ podcast.user.full_name or 'User ' ~ podcast.user.id }}"
                             data-image="{{ podcast.image_path or '/static/default_cover.png' }}"
+                            data-id="{{ podcast.id }}"
                             class="w-20 h-20 rounded-full bg-orange-500 text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg">
                             <svg id="inline-play-icon" width="36" height="36" viewBox="0 0 24 24" fill="currentColor"
                                 class="ml-1">
@@ -314,7 +315,7 @@
 
     // Read attributes safely (The button is above this script, so this is safe)
     // But better to read them inside init or functions to be safe.
-    let podcastAudioPath, podcastTitle, podcastAuthor, podcastImage, thisPodcastSrc;
+    let podcastAudioPath, podcastTitle, podcastAuthor, podcastImage, podcastId, thisPodcastSrc;
 
     function initVars() {
         const btn = getInlinePlayBtn();
@@ -323,6 +324,7 @@
         podcastTitle = btn.getAttribute('data-title');
         podcastAuthor = btn.getAttribute('data-author');
         podcastImage = btn.getAttribute('data-image');
+        podcastId = btn.getAttribute('data-id');
         thisPodcastSrc = window.location.origin + podcastAudioPath;
     }
 
@@ -361,7 +363,8 @@
                     podcastAudioPath,
                     podcastTitle,
                     podcastAuthor,
-                    podcastImage
+                    podcastImage,
+                    podcastId
                 );
             } else {
                 alert("Error: Audio Player not loaded. Please refresh.");
