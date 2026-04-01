@@ -15,5 +15,3 @@ pydantic-settings
 requests
 psycopg2-binary
 groq
-
-
