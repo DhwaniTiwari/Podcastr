@@ -52,7 +52,14 @@ def login(
     access_token = utils.create_access_token(data={"sub": user.email})
     
     response = RedirectResponse(url="/dashboard", status_code=status.HTTP_302_FOUND)
-    response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True, path="/")
+    response.set_cookie(
+        key="access_token",
+        value=f"Bearer {access_token}",
+        httponly=True,
+        path="/",
+        secure=True,
+        samesite="lax"
+    )
     return response
 
 @router.get("/logout")
