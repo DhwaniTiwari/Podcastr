@@ -7,8 +7,8 @@ import uuid
 def generate_script_content(topic: str) -> str:
     return generate_podcast_script(topic)
 
-def generate_audio_content(script: str, output_path: str):
-    return generate_audio_from_text(script, output_path)
+def generate_audio_content(script: str, output_path: str, language: str = "original"):
+    return generate_audio_from_text(script, output_path, language)
 
 def translate_text_service(text: str, target_language: str) -> str:
     return translate_text(text, target_language)

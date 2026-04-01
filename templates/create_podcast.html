@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div style="max-width: 600px; margin: 0 auto; margin-top: 2rem;">
+<div style="max-width: 600px; margin: 0 auto; margin-top: 2rem; margin-bottom: 4rem;">
     <h1 style="margin-bottom: 0.5rem;">Create a Podcast</h1>
-    <p style="color: var(--text-muted); margin-bottom: 2rem;">Enter a topic, and our AI will generate a script for you.
-    </p>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">Enter a topic for AI, or manually write your own custom script.</p>
 
+    <!-- AI Generation Form -->
     <form action="/create/generate" method="post" class="card" data-turbo="false"
         onsubmit="document.getElementById('gen-btn').innerText = 'Generating... (Please Wait)'; document.getElementById('gen-btn').disabled = true;"
-        style="background: var(--card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border);">
+        style="background: var(--card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border); margin-bottom: 2rem;">
+        
+        <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">✨ Generate with AI</h2>
 
         {% if error %}
         <div
@@ -28,6 +30,41 @@
                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
             </svg>
             Generate Script
+        </button>
+    </form>
+
+    <div style="display: flex; align-items: center; gap: 1rem; margin: 2rem 0;">
+        <div style="flex: 1; height: 1px; background-color: var(--border);"></div>
+        <span style="color: var(--text-muted); font-weight: 500;">OR</span>
+        <div style="flex: 1; height: 1px; background-color: var(--border);"></div>
+    </div>
+
+    <!-- Manual Script Form -->
+    <form action="/create/publish" method="post" enctype="multipart/form-data" class="card" data-turbo="false"
+        onsubmit="document.getElementById('pub-btn').innerText = 'Synthesizing Audio...'; document.getElementById('pub-btn').disabled = true;"
+        style="background: var(--card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border);">
+        <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">✍️ Write Manually</h2>
+        
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label for="manual_title">Podcast Title</label>
+            <input type="text" id="manual_title" name="title" class="form-control" required placeholder="e.g. My Custom Story">
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label for="manual_script">Your Script</label>
+            <textarea id="manual_script" name="script" class="form-control" rows="8" required placeholder="Write exactly what you want the voice to say here..."></textarea>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label for="manual_desc">Description (Optional)</label>
+            <textarea id="manual_desc" name="description" class="form-control" rows="2" placeholder="Brief summary of your podcast"></textarea>
+        </div>
+
+        <button type="submit" id="pub-btn" class="btn" style="width: 100%; background-color: #10B981;">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" style="margin-right: 0.5rem;">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            Generate Audio & Publish
         </button>
     </form>
 </div>

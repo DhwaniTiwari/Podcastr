@@ -3,6 +3,8 @@
 {% block title %}Podcastr - AI Podcast Generator{% endblock %}
 
 {% block content %}
+<div style="position: fixed; inset: 0; z-index: -1; background-image: url('/static/background.png'); background-size: cover; background-position: center;"></div>
+
 <div class="hero-section" style="text-align: center; padding: 4rem 0;">
     <h1
         style="font-size: 3rem; margin-bottom: 1rem; background: linear-gradient(to right, #A78BFA, #F472B6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
@@ -23,22 +25,94 @@
     {% endif %}
 </div>
 
-<div class="features-grid"
-    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 4rem;">
-    <div class="card"
-        style="background: var(--card); padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--border);">
-        <h3 style="margin-bottom: 0.5rem;">🎙️ AI Script Writing</h3>
-        <p style="color: var(--text-muted);">Our advanced AI writes engaging scripts for any topic you choose.</p>
+<div class="features-grid flex flex-wrap justify-center gap-8 mt-16 max-w-6xl mx-auto px-4">
+    <div class="card flex-1 min-w-[300px] max-w-[360px]"
+        style="background: rgba(30, 20, 15, 0.7); backdrop-filter: blur(12px); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+        <h3 style="margin-bottom: 0.5rem; color: #FFFFFF;">🎙️ AI Script Writing</h3>
+        <p style="color: #D1D5DB;">Our advanced AI writes engaging scripts for any topic you choose.</p>
     </div>
-    <div class="card"
-        style="background: var(--card); padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--border);">
-        <h3 style="margin-bottom: 0.5rem;">🗣️ Realistic Voices</h3>
-        <p style="color: var(--text-muted);">Powered by Edge TTS for naturally fast speech generation.</p>
+    <div class="card flex-1 min-w-[300px] max-w-[360px]"
+        style="background: rgba(30, 20, 15, 0.7); backdrop-filter: blur(12px); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+        <h3 style="margin-bottom: 0.5rem; color: #FFFFFF;">🗣️ Realistic Voices</h3>
+        <p style="color: #D1D5DB;">Powered by Edge TTS for naturally fast speech generation.</p>
     </div>
-    <div class="card"
-        style="background: var(--card); padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--border);">
-        <h3 style="margin-bottom: 0.5rem;">⚡ Instant Generation</h3>
-        <p style="color: var(--text-muted);">Get your podcast ready in minutes, not days.</p>
+    <div class="card flex-1 min-w-[300px] max-w-[360px]"
+        style="background: rgba(30, 20, 15, 0.7); backdrop-filter: blur(12px); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+        <h3 style="margin-bottom: 0.5rem; color: #FFFFFF;">⚡ Instant Generation</h3>
+        <p style="color: #D1D5DB;">Get your podcast ready in minutes, not days.</p>
+    </div>
+    <div class="card flex-1 min-w-[300px] max-w-[360px]"
+        style="background: rgba(30, 20, 15, 0.7); backdrop-filter: blur(12px); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+        <h3 style="margin-bottom: 0.5rem; color: #FFFFFF;">🌍 Global Translation</h3>
+        <p style="color: #D1D5DB;">Translate your generated podcasts into multiple languages instantly.</p>
+    </div>
+    <div class="card flex-1 min-w-[300px] max-w-[360px]"
+        style="background: rgba(30, 20, 15, 0.7); backdrop-filter: blur(12px); padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+        <h3 style="margin-bottom: 0.5rem; color: #FFFFFF;">🎧 Curate Playlists</h3>
+        <p style="color: #D1D5DB;">Organize your favorite generated podcasts into custom playlists easily.</p>
+    </div>
+</div>
+
+<!-- HOW IT WORKS SECTION -->
+<div class="how-it-works mt-24 text-center max-w-6xl mx-auto px-4">
+    <h2 style="font-size: 2.5rem; color: white; margin-bottom: 3rem; font-weight: bold;">How It Works</h2>
+    <div class="flex flex-col md:flex-row justify-center gap-8">
+        <div class="step flex-1 p-6" style="background: rgba(30,20,15,0.7); backdrop-filter: blur(12px); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-xl font-bold text-white mx-auto mb-4">1</div>
+            <h3 class="text-xl font-bold text-white mb-2">Prompt or Script</h3>
+            <p class="text-gray-300">Tell the AI what your podcast is about, or manually write your own custom script.</p>
+        </div>
+        <div class="step flex-1 p-6" style="background: rgba(30,20,15,0.7); backdrop-filter: blur(12px); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-xl font-bold text-white mx-auto mb-4">2</div>
+            <h3 class="text-xl font-bold text-white mb-2">AI Generation</h3>
+            <p class="text-gray-300">Our Llama-3 AI writes the script and Edge TTS automatically voices it.</p>
+        </div>
+        <div class="step flex-1 p-6" style="background: rgba(30,20,15,0.7); backdrop-filter: blur(12px); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-xl font-bold text-white mx-auto mb-4">3</div>
+            <h3 class="text-xl font-bold text-white mb-2">Publish & Share</h3>
+            <p class="text-gray-300">Listen, download, translate, or curate your new podcast into custom playlists.</p>
+        </div>
+    </div>
+</div>
+
+<!-- WHAT YOU CAN CREATE SECTION -->
+<div class="podcast-ideas mt-24 pb-24 text-center max-w-6xl mx-auto px-4">
+    <h2 style="font-size: 2.5rem; color: white; margin-bottom: 3rem; font-weight: bold;">What Will You Create?</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="idea-card p-6 hover:-translate-y-1 transition-transform cursor-pointer" style="background: rgba(30,20,15,0.7); backdrop-filter: blur(12px); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="text-4xl mb-4">📰</div>
+            <h3 class="text-xl font-bold text-white mb-2">Daily News Briefs</h3>
+            <p class="text-gray-300">Summarize the latest tech, finance, or global news for your morning commute.</p>
+        </div>
+        <div class="idea-card p-6 hover:-translate-y-1 transition-transform cursor-pointer" style="background: rgba(30,20,15,0.7); backdrop-filter: blur(12px); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="text-4xl mb-4">🕵️‍♀️</div>
+            <h3 class="text-xl font-bold text-white mb-2">True Crime</h3>
+            <p class="text-gray-300">Generate gripping narratives and unsolved mysteries with atmospheric voices.</p>
+        </div>
+        <div class="idea-card p-6 hover:-translate-y-1 transition-transform cursor-pointer" style="background: rgba(30,20,15,0.7); backdrop-filter: blur(12px); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="text-4xl mb-4">📚</div>
+            <h3 class="text-xl font-bold text-white mb-2">Educational</h3>
+            <p class="text-gray-300">Turn dry textbooks or historical events into engaging audio lessons.</p>
+        </div>
+        <div class="idea-card p-6 hover:-translate-y-1 transition-transform cursor-pointer" style="background: rgba(30,20,15,0.7); backdrop-filter: blur(12px); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="text-4xl mb-4">🌙</div>
+            <h3 class="text-xl font-bold text-white mb-2">Bedtime Stories</h3>
+            <p class="text-gray-300">Create calming, imaginative tales for kids to fall asleep to.</p>
+        </div>
+        <div class="idea-card p-6 hover:-translate-y-1 transition-transform cursor-pointer" style="background: rgba(30,20,15,0.7); backdrop-filter: blur(12px); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="text-4xl mb-4">💪</div>
+            <h3 class="text-xl font-bold text-white mb-2">Daily Motivation</h3>
+            <p class="text-gray-300">Start the day right with AI-generated pep talks and daily affirmations.</p>
+        </div>
+        <div class="idea-card p-6 hover:-translate-y-1 transition-transform cursor-pointer" style="background: rgba(30,20,15,0.7); backdrop-filter: blur(12px); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="text-4xl mb-4">🍿</div>
+            <h3 class="text-xl font-bold text-white mb-2">Pop Culture</h3>
+            <p class="text-gray-300">Hot takes and quick recaps on movies, TV shows, and celebrity gossip.</p>
+        </div>
+    </div>
+    
+    <div class="mt-16">
+        <a href="/auth/register" class="inline-block bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 px-10 rounded-full shadow-xl transition-transform hover:scale-105" style="font-size: 1.25rem;">Start Creating Now</a>
     </div>
 </div>
 {% endblock %}

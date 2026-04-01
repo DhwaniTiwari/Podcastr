@@ -7,14 +7,14 @@
 
     <!-- "Currently Playing" Card Section -->
     <div>
-        <h2 class="text-xl font-bold mb-6 text-white">Currently Playing</h2>
+        <h2 class="text-xl font-bold mb-6 text-gray-900">Currently Playing</h2>
 
         <div
-            class="bg-[#18181b] rounded-3xl p-6 md:p-10 flex flex-col md:flex-row gap-8 md:gap-12 shadow-2xl border border-[#27272a]">
+            class="bg-white rounded-3xl p-6 md:p-10 flex flex-col md:flex-row gap-8 md:gap-12 shadow-xl border border-gray-200">
 
             <!-- Left: Artwork -->
             <div class="flex-shrink-0 mx-auto md:mx-0">
-                <div class="w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden shadow-2xl relative group bg-[#000]">
+                <div class="w-64 h-64 md:w-80 md:h-80 rounded-2xl overflow-hidden shadow-lg relative group bg-gray-100">
                     <img src="{{ podcast.image_path or '/static/default_cover.png' }}?v={{ range(1, 10000) | random }}"
                         class="w-full h-full object-cover" alt="{{ podcast.title }}">
                 </div>
@@ -26,14 +26,14 @@
                 <!-- Title Area -->
                 <div class="flex justify-between items-start mb-2">
                     <h1
-                        class="text-3xl md:text-5xl font-bold leading-tight text-white line-clamp-2 pr-4 tracking-tight">
+                        class="text-3xl md:text-5xl font-bold leading-tight text-gray-900 line-clamp-2 pr-4 tracking-tight">
                         {{ podcast.title }}
                     </h1>
 
                     <!-- Kebab Menu -->
                     <div class="relative flex-shrink-0">
                         <button onclick="document.getElementById('menu-dropdown').classList.toggle('hidden')"
-                            class="text-gray-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
+                            class="text-gray-500 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100 transition-colors">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                                 <circle cx="12" cy="12" r="2" />
                                 <circle cx="12" cy="5" r="2" />
@@ -43,12 +43,12 @@
 
                         <!-- Dropdown Menu -->
                         <div id="menu-dropdown"
-                            class="hidden absolute right-0 mt-2 w-48 bg-[#27272a] rounded-xl shadow-xl border border-[#3f3f46] z-50 overflow-hidden transform transition-all origin-top-right">
+                            class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 z-50 overflow-hidden transform transition-all origin-top-right">
 
                             <!-- Save to Playlist -->
                             <button
                                 onclick="document.getElementById('playlist-modal').classList.remove('hidden'); document.getElementById('menu-dropdown').classList.add('hidden');"
-                                class="w-full text-left flex items-center gap-2 px-4 py-3 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors">
+                                class="w-full text-left flex items-center gap-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2">
                                     <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2-2z"></path>
@@ -58,7 +58,7 @@
 
                             <!-- Delete (Owner Only) -->
                             {% if user.id == podcast.user_id %}
-                            <div class="border-t border-[#3f3f46]"></div>
+                            <div class="border-t border-gray-200"></div>
                             <form action="/profile/delete-podcast/{{ podcast.id }}" method="POST"
                                 onsubmit="return confirm('Are you sure you want to delete this podcast? This action cannot be undone.');">
                                 <button type="submit"
@@ -81,16 +81,16 @@
                 <!-- Author/Badge -->
                 <div class="flex items-center gap-3 mb-10">
                     <div
-                        class="w-8 h-8 rounded-full bg-orange-600 flex items-center justify-center text-xs font-bold text-white ring-2 ring-[#18181b]">
+                        class="w-8 h-8 rounded-full bg-orange-600 flex items-center justify-center text-xs font-bold text-white ring-2 ring-white">
                         {{ podcast.user.email[0].upper() }}
                     </div>
-                    <span class="text-gray-300 font-medium text-lg">{{ podcast.user.full_name or podcast.user.email
+                    <span class="text-gray-700 font-medium text-lg">{{ podcast.user.full_name or podcast.user.email
                         }}</span>
 
                     <!-- Optional 'Edit' Badge if owner -->
                     {% if user.id == podcast.user_id %}
                     <span
-                        class="ml-2 px-2 py-0.5 rounded text-xs font-medium bg-white/10 text-gray-400 border border-white/10">
+                        class="ml-2 px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">
                         Owner
                     </span>
                     {% endif %}
@@ -103,7 +103,7 @@
                     <div class="flex items-center gap-8">
                         <!-- Skip Back -->
                         <button onclick="skipBoth(-10)"
-                            class="text-gray-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full">
+                            class="text-gray-500 hover:text-gray-900 transition-colors p-2 hover:bg-gray-100 rounded-full">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"></path>
                             </svg>
@@ -114,7 +114,7 @@
                             data-title="{{ podcast.title }}"
                             data-author="{{ podcast.user.full_name or 'User ' ~ podcast.user.id }}"
                             data-image="{{ podcast.image_path or '/static/default_cover.png' }}"
-                            class="w-20 h-20 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                            class="w-20 h-20 rounded-full bg-orange-500 text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg">
                             <svg id="inline-play-icon" width="36" height="36" viewBox="0 0 24 24" fill="currentColor"
                                 class="ml-1">
                                 <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -128,7 +128,7 @@
 
                         <!-- Skip Forward -->
                         <button onclick="skipBoth(10)"
-                            class="text-gray-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full">
+                            class="text-gray-500 hover:text-gray-900 transition-colors p-2 hover:bg-gray-100 rounded-full">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"></path>
                             </svg>
@@ -139,13 +139,13 @@
                     <div class="flex items-center gap-4 text-sm font-medium text-gray-500 font-mono pt-2">
                         <span id="inline-current-time" class="w-12 text-right">0:00</span>
 
-                        <div class="flex-1 h-1.5 bg-gray-800 rounded-full cursor-pointer relative group overflow-hidden"
+                        <div class="flex-1 h-1.5 bg-gray-200 rounded-full cursor-pointer relative group overflow-hidden"
                             onclick="seekBoth(event)">
                             <!-- Buffer/Background -->
-                            <div class="absolute inset-0 bg-gray-700/30"></div>
+                            <div class="absolute inset-0 bg-gray-100"></div>
                             <!-- Fill -->
                             <div id="inline-progress-fill"
-                                class="absolute top-0 left-0 h-full bg-white rounded-full w-0 group-hover:bg-orange-500 transition-colors">
+                                class="absolute top-0 left-0 h-full bg-orange-500 rounded-full w-0 transition-colors">
                             </div>
                         </div>
 
@@ -165,20 +165,20 @@
 
             <!-- Description -->
             <div class="space-y-4">
-                <p class="text-gray-300 leading-relaxed text-lg">
+                <p class="text-gray-700 leading-relaxed text-lg">
                     {{ podcast.description or "No description available for this episode." }}
                 </p>
             </div>
 
             <!-- Transcription Section -->
             <div class="space-y-6 relative">
-                <div class="flex items-center justify-between border-b border-gray-800 pb-4 flex-wrap gap-4">
-                    <h3 class="font-bold text-xl text-white">Transcription</h3>
+                <div class="flex items-center justify-between border-b border-gray-200 pb-4 flex-wrap gap-4">
+                    <h3 class="font-bold text-xl text-gray-900">Transcription</h3>
 
                     <!-- Translation Controls -->
                     <div class="flex items-center gap-2">
                         <select id="translate-lang"
-                            class="bg-[#18181b] text-sm text-gray-300 border border-[#3f3f46] rounded-md px-2 py-1 outline-none focus:border-orange-500">
+                            class="bg-white text-sm text-gray-700 border border-gray-300 rounded-md px-2 py-1 outline-none focus:border-orange-500">
                             <option value="original">Original</option>
                             <option value="Spanish">Spanish</option>
                             <option value="French">French</option>
@@ -200,7 +200,7 @@
 
                 <!-- Loading Overlay logic inside script -->
                 <article id="script-content" data-original="{{ podcast.script | escape }}"
-                    class="prose prose-invert max-w-none text-gray-400 leading-relaxed space-y-6 whitespace-pre-line text-base font-sans relative">
+                    class="prose max-w-none text-gray-600 leading-relaxed space-y-6 whitespace-pre-line text-base font-sans relative">
                     {{ podcast.script | trim }}
                 </article>
             </div>
@@ -208,20 +208,20 @@
 
         <!-- Right Column: Sidebar (Top Podcasts / Recommendations) -->
         <div class="space-y-8">
-            <h3 class="font-bold text-white text-lg">Fans Also Like</h3>
+            <h3 class="font-bold text-gray-900 text-lg">Fans Also Like</h3>
 
             <!-- Real Recommendations -->
             {% if recommendations %}
             {% for rec in recommendations %}
             <a href="/podcasts/{{ rec.id }}"
-                class="block bg-[#18181b] rounded-xl p-3 border border-[#27272a] hover:bg-[#27272a] transition-colors group">
+                class="block bg-white rounded-xl p-3 border border-gray-200 hover:bg-gray-50 transition-colors group">
                 <div class="flex gap-4 items-center">
-                    <div class="w-16 h-16 rounded-lg overflow-hidden bg-gray-800 flex-shrink-0 relative">
+                    <div class="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 relative">
                         <img src="{{ rec.image_path or '/static/default_cover.png' }}"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform">
                     </div>
                     <div class="min-w-0">
-                        <h4 class="font-bold text-white text-sm truncate group-hover:text-orange-500 transition-colors">
+                        <h4 class="font-bold text-gray-900 text-sm truncate group-hover:text-orange-500 transition-colors">
                             {{ rec.title }}</h4>
                         <p class="text-xs text-gray-500 truncate mt-1">By {{ rec.user.full_name or rec.user.email }}</p>
                         <div class="flex items-center gap-2 mt-2 text-[10px] text-gray-600">
@@ -249,12 +249,12 @@
 
 <!-- PLAYLIST MODAL -->
 <div id="playlist-modal"
-    class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm">
-    <div class="bg-[#18181b] w-full max-w-md rounded-2xl border border-[#27272a] shadow-2xl overflow-hidden m-4">
+    class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div class="bg-white w-full max-w-md rounded-2xl border border-gray-200 shadow-2xl overflow-hidden m-4">
 
         <!-- Header -->
-        <div class="p-4 border-b border-[#27272a] flex justify-between items-center bg-[#27272a]/50">
-            <h3 class="font-bold text-white">Save to Playlist</h3>
+        <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+            <h3 class="font-bold text-gray-900">Save to Playlist</h3>
             <button onclick="document.getElementById('playlist-modal').classList.add('hidden')"
                 class="text-gray-400 hover:text-white">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -268,12 +268,12 @@
             {% if playlists %}
             {% for playlist in playlists %}
             <button onclick="addToPlaylist('{{ playlist.id }}', '{{ podcast.id }}')"
-                class="w-full text-left p-4 rounded-xl bg-[#27272a] hover:bg-orange-500/10 hover:border-orange-500/50 border border-transparent transition-all flex justify-between items-center group">
+                class="w-full text-left p-4 rounded-xl bg-gray-50 hover:bg-orange-50 border border-transparent hover:border-orange-200 transition-all flex justify-between items-center group">
                 <div>
-                    <div class="font-bold text-gray-200 group-hover:text-orange-500">{{ playlist.title }}</div>
+                    <div class="font-bold text-gray-800 group-hover:text-orange-600">{{ playlist.title }}</div>
                     <div class="text-xs text-gray-500 mt-0.5">{{ playlist.podcasts|length }} items</div>
                 </div>
-                <svg class="text-gray-600 group-hover:text-orange-500" width="20" height="20" viewBox="0 0 24 24"
+                <svg class="text-gray-400 group-hover:text-orange-500" width="20" height="20" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 5v14M5 12h14" />
                 </svg>
@@ -458,11 +458,22 @@
 
         if (lang === 'original') {
             scriptContent.innerText = scriptContent.getAttribute('data-original');
+            // Restore Original Audio
+            const originalAudio = '{{ podcast.audio_path }}';
+            podcastAudioPath = originalAudio;
+            thisPodcastSrc = window.location.origin + originalAudio;
+            const playBtn = getInlinePlayBtn();
+            if (playBtn) playBtn.setAttribute('data-audio', originalAudio);
+            
+            // Auto-play original audio
+            if (window.playPodcast) {
+                window.playPodcast(podcastAudioPath, podcastTitle, podcastAuthor, podcastImage);
+            }
             return;
         }
 
         const originalBtnText = translateBtn.innerText;
-        translateBtn.innerText = "Translating...";
+        translateBtn.innerText = "Translating Audio & Text...";
         translateBtn.disabled = true;
         translateBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
@@ -476,13 +487,32 @@
 
             if (response.ok) {
                 scriptContent.innerText = data.translated_text;
+                
+                // Swap in Translated Audio
+                if (data.audio_url) {
+                    podcastAudioPath = data.audio_url;
+                    thisPodcastSrc = window.location.origin + data.audio_url;
+                    const playBtn = getInlinePlayBtn();
+                    if (playBtn) playBtn.setAttribute('data-audio', data.audio_url);
+                    
+                    // Auto-play translated audio
+                    if (window.playPodcast) {
+                        window.playPodcast(podcastAudioPath, podcastTitle, podcastAuthor, podcastImage);
+                    }
+                    
+                    const originalText = translateBtn.innerText;
+                    translateBtn.innerText = "Playing!";
+                    setTimeout(() => translateBtn.innerText = "Translate", 2000);
+                }
             } else {
                 alert('Error translating: ' + (data.error || 'Unknown error'));
             }
         } catch (e) {
             alert('Network error during translation: ' + e);
         } finally {
-            translateBtn.innerText = originalBtnText;
+            if (translateBtn.innerText !== "Audio Ready!") {
+                translateBtn.innerText = originalBtnText;
+            }
             translateBtn.disabled = false;
             translateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         }

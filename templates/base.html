@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Podcastr{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/static/css/styles.css?v=3">
+    <link rel="stylesheet" href="/static/css/styles.css?v=7">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script type="module">
         import * as Turbo from 'https://esm.sh/@hotwired/turbo';
@@ -34,7 +34,7 @@
             <a href="/dashboard" class="logo-container">
                 <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="24" height="24" rx="6" fill="#F97316" />
-                    <path d="M12 6V18M8 10V14M16 9V15" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    <path d="M12 6V18M8 10V14M16 9V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                 </svg>
                 <div class="logo-text">Podcastr</div>
             </a>
@@ -111,17 +111,17 @@
 
     <!-- Global Player -->
     <div class="bottom-player" id="global-player" data-turbo-permanent
-        style="display: none; background: rgba(23, 25, 30, 0.95); backdrop-filter: blur(16px); border-top: 1px solid #2D3039; padding: 0 2rem; align-items: center; justify-content: space-between; box-shadow: 0 -10px 40px rgba(0,0,0,0.6); z-index: 1000; height: 90px; position: fixed; bottom: 0; left: 0; right: 0;">
+        style="display: none; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(16px); border-top: 1px solid #E5E7EB; padding: 0 2rem; align-items: center; justify-content: space-between; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); z-index: 1000; height: 90px; position: fixed; bottom: 0; left: 0; right: 0;">
 
         <!-- INFO -->
         <div style="display: flex; align-items: center; gap: 1.25rem; width: 300px;">
             <img src="" id="player-img"
-                style="width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background: #333; border: 1px solid #2D3039; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                style="width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background: #E5E7EB; border: 1px solid #E5E7EB; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
             <div style="overflow: hidden;">
                 <div id="player-title"
-                    style="font-weight: 600; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white; margin-bottom: 2px;">
+                    style="font-weight: 600; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); margin-bottom: 2px;">
                     Podcast Title</div>
-                <div id="player-author" style="font-size: 0.85rem; color: #9CA3AF;">Author</div>
+                <div id="player-author" style="font-size: 0.85rem; color: var(--text-muted);">Author</div>
             </div>
         </div>
 

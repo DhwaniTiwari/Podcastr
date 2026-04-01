@@ -159,13 +159,24 @@ def translate_podcast_script(
     current_user: User = Depends(get_current_user)
 ):
     from fastapi.responses import JSONResponse
+    import uuid
+    import os
     podcast = db.query(models.Podcast).filter(models.Podcast.id == podcast_id).first()
     if not podcast:
         return JSONResponse(status_code=404, content={"error": "Podcast not found"})
         
     try:
         translated_text = services.translate_text_service(podcast.script, request.target_language)
-        return {"translated_text": translated_text}
+        
+        # Generate translated audio
+        filename = f"translated_{uuid.uuid4()}.mp3"
+        os.makedirs("static/uploads", exist_ok=True)
+        filepath = f"static/uploads/{filename}"
+        
+        services.generate_audio_content(translated_text, filepath, language=request.target_language)
+        audio_url = f"/static/uploads/{filename}"
+        
+        return {"translated_text": translated_text, "audio_url": audio_url}
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
 
