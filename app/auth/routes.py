@@ -58,7 +58,8 @@ def login(
         httponly=True,
         path="/",
         secure=True,
-        samesite="lax"
+        samesite="lax",
+        max_age=60 * 60 * 24 * 7  # 7 days
     )
     return response
 
