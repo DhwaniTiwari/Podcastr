@@ -2,10 +2,20 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from contextlib import asynccontextmanager
 from app.config import settings
 import os
 
-app = FastAPI(title="AI SaaS Podcastr")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Ensure required directories exist at startup
+    os.makedirs("static/uploads", exist_ok=True)
+    # Create all DB tables (idempotent)
+    from app.database import engine, Base
+    Base.metadata.create_all(bind=engine)
+    yield
+
+app = FastAPI(title="AI SaaS Podcastr", lifespan=lifespan)
 
 # Ensure static and templates directories exist
 os.makedirs("static", exist_ok=True)
@@ -19,9 +29,6 @@ from app.auth import routes as auth_routes
 from app.database import engine, Base
 from app.auth import models as auth_models
 from app.podcasts import models as podcast_models
-
-# Create Tables
-Base.metadata.create_all(bind=engine)
 
 from app.podcasts import routes as podcast_routes
 from app.payments import routes as payment_routes
