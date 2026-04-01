@@ -3,6 +3,17 @@
 {% block title %}{{ podcast.title }} - Podcastr{% endblock %}
 
 {% block content %}
+<script>
+    // Hide the floating footer player on the detail page — the inline player handles everything here
+    document.addEventListener('DOMContentLoaded', function () {
+        const gp = document.getElementById('global-player');
+        if (gp) gp.style.display = 'none';
+    });
+    document.addEventListener('turbo:before-visit', function () {
+        const gp = document.getElementById('global-player');
+        if (gp) gp.style.display = '';
+    });
+</script>
 <div class="max-w-6xl mx-auto pt-8 pb-12 px-4 space-y-12">
 
     <!-- "Currently Playing" Card Section -->
