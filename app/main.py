@@ -41,6 +41,8 @@ app.include_router(profile_routes.router)
 
 from fastapi import HTTPException
 from fastapi.responses import RedirectResponse
+from fastapi.responses import PlainTextResponse
+import traceback
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
@@ -48,9 +50,14 @@ async def http_exception_handler(request: Request, exc: HTTPException):
         response = RedirectResponse(url="/auth/login")
         response.delete_cookie("access_token") 
         return response
-    # Return default JSON response for other errors
     from fastapi.responses import JSONResponse
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
+
+@app.exception_handler(Exception)
+async def generic_exception_handler(request: Request, exc: Exception):
+    tb = traceback.format_exc()
+    print(f"UNHANDLED EXCEPTION: {tb}")
+    return PlainTextResponse(f"Internal Server Error:\n\n{tb}", status_code=500)
 
 
 
