@@ -14,5 +14,4 @@ aiofiles
 pydantic-settings
 requests
 passlib[bcrypt]
-
-
+psycopg2-binary
