@@ -5,13 +5,13 @@ services:
     plan: free
     region: singapore
     buildCommand: docker build -t podcastr .
-    startCommand: mkdir -p /app/data/uploads && ln -sfn /app/data/uploads /app/static/uploads && uvicorn app.main:app --host 0.0.0.0 --port 8000
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
     envVars:
       - key: DATABASE_URL
-        value: sqlite:////app/data/podcastr.db
+        sync: false
       - key: SECRET_KEY
         generateValue: true
-      - key: GOOGLE_API_KEY
+      - key: GROQ_API_KEY
         sync: false
       - key: RAZORPAY_KEY_ID
         sync: false
@@ -19,11 +19,3 @@ services:
         sync: false
       - key: RAZORPAY_WEBHOOK_SECRET
         sync: false
-    disk:
-      name: podcastr-data
-      mountPath: /app/data
-      sizeGB: 1
-
-permissions:
-  - key: podcastr-data
-    access: read-write
