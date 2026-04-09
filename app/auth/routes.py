@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.auth import models, utils
 from app.dependencies import get_current_user
+from app.config import settings
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 templates = Jinja2Templates(directory="templates")
