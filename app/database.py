@@ -9,7 +9,13 @@ if "sqlite" in SQL_ALCHEMY_DATABASE_URL:
         SQL_ALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
     )
 else:
-    engine = create_engine(SQL_ALCHEMY_DATABASE_URL)
+    engine = create_engine(
+        SQL_ALCHEMY_DATABASE_URL,
+        pool_pre_ping=True,    # Test connection before use — fixes Neon SSL drop errors
+        pool_recycle=300,      # Recycle connections every 5 minutes
+        pool_size=5,
+        max_overflow=2
+    )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
