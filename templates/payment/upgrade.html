@@ -25,7 +25,11 @@
                 <li><span style="color: #10B981;">✓</span> Personal use only</li>
             </ul>
 
+            {% if plan == 'free' or not plan %}
             <button disabled class="btn btn-secondary">Current Plan</button>
+            {% else %}
+            <button disabled class="btn btn-secondary" style="opacity:0.5;">Free</button>
+            {% endif %}
         </div>
 
         <!-- PRO PLAN -->
@@ -45,8 +49,12 @@
                 <li><span style="color: #F97316;">✓</span> Commercial usage allowed</li>
             </ul>
 
+            {% if plan == 'pro' %}
+            <button disabled class="btn" style="width: 100%; justify-content: center; background: #10B981; cursor: default;">✓ Current Plan</button>
+            {% else %}
             <button onclick="upgradeSubscription()" class="btn"
                 style="width: 100%; justify-content: center; cursor: pointer;">Upgrade to Pro</button>
+            {% endif %}
         </div>
 
         <!-- ENTERPRISE PLAN -->
