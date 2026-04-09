@@ -109,15 +109,25 @@ def publish_podcast(
 ):
     # Step 2: Generate Audio & Save
     
-    # 1. Save Thumbnail (if any)
+    # 1. Save Thumbnail (upload to Cloudinary if configured, else local)
     image_url = None
     if thumbnail and thumbnail.filename:
-        os.makedirs("static/uploads", exist_ok=True)
-        img_name = f"{uuid.uuid4()}_{thumbnail.filename}"
-        img_path = f"static/uploads/{img_name}"
-        with open(img_path, "wb") as buffer:
-             shutil.copyfileobj(thumbnail.file, buffer)
-        image_url = f"/static/uploads/{img_name}"
+        from app.storage.cloudinary_service import upload_image
+        import uuid as _uuid
+        file_bytes = thumbnail.file.read()
+        img_name = f"{_uuid.uuid4()}_{thumbnail.filename}"
+        
+        # Try Cloudinary first (permanent cloud storage)
+        cloud_url = upload_image(file_bytes, img_name)
+        if cloud_url:
+            image_url = cloud_url
+        else:
+            # Fallback: save locally (ephemeral on Render free tier)
+            os.makedirs("static/uploads", exist_ok=True)
+            img_path = f"static/uploads/{img_name}"
+            with open(img_path, "wb") as buffer:
+                buffer.write(file_bytes)
+            image_url = f"/static/uploads/{img_name}"
 
     # 2. Generate Audio
     filename = f"{uuid.uuid4()}.mp3"

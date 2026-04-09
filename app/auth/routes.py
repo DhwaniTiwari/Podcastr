@@ -57,7 +57,7 @@ def login(
         value=f"Bearer {access_token}",
         httponly=True,
         path="/",
-        secure=True,
+        secure=settings.PRODUCTION,   # True on Render (HTTPS), False on localhost (HTTP)
         samesite="lax",
         max_age=60 * 60 * 24 * 7  # 7 days
     )

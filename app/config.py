@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     RAZORPAY_KEY_SECRET: str = ""
     RAZORPAY_WEBHOOK_SECRET: str = ""
     TTS_MODEL_PATH: str = ""
+    CLOUDINARY_CLOUD_NAME: str = ""
+    CLOUDINARY_API_KEY: str = ""
+    CLOUDINARY_API_SECRET: str = ""
+    PRODUCTION: bool = False  # Set to True on Render via env var
 
     class Config:
         env_file = ".env"
