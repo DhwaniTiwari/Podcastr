@@ -112,17 +112,21 @@ def publish_podcast(
     # 1. Save Thumbnail (upload to Cloudinary if configured, else local)
     image_url = None
     if thumbnail and thumbnail.filename:
-        from app.storage.cloudinary_service import upload_image
         import uuid as _uuid
         file_bytes = thumbnail.file.read()
         img_name = f"{_uuid.uuid4()}_{thumbnail.filename}"
-        
-        # Try Cloudinary first (permanent cloud storage)
-        cloud_url = upload_image(file_bytes, img_name)
+        cloud_url = None
+
+        try:
+            from app.storage.cloudinary_service import upload_image
+            cloud_url = upload_image(file_bytes, img_name)
+        except Exception as e:
+            print(f"Cloudinary unavailable, falling back to local: {e}")
+
         if cloud_url:
             image_url = cloud_url
         else:
-            # Fallback: save locally (ephemeral on Render free tier)
+            # Fallback: save locally
             os.makedirs("static/uploads", exist_ok=True)
             img_path = f"static/uploads/{img_name}"
             with open(img_path, "wb") as buffer:

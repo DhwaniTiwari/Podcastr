@@ -53,12 +53,14 @@ def login(
     access_token = utils.create_access_token(data={"sub": user.email})
     
     response = RedirectResponse(url="/dashboard", status_code=status.HTTP_302_FOUND)
+    # Auto-detect HTTPS: secure=True on Render (https), False on localhost (http)
+    is_https = request.url.scheme == "https"
     response.set_cookie(
         key="access_token",
         value=f"Bearer {access_token}",
         httponly=True,
         path="/",
-        secure=settings.PRODUCTION,   # True on Render (HTTPS), False on localhost (HTTP)
+        secure=is_https,
         samesite="lax",
         max_age=60 * 60 * 24 * 7  # 7 days
     )
