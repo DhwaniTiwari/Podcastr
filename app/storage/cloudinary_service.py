@@ -1,5 +1,6 @@
 import cloudinary
 import cloudinary.uploader
+from typing import Optional
 from app.config import settings
 
 def _configure():
@@ -10,7 +11,7 @@ def _configure():
         secure=True
     )
 
-def upload_image(file_bytes: bytes, filename: str) -> str | None:
+def upload_image(file_bytes: bytes, filename: str) -> Optional[str]:
     """Upload image bytes to Cloudinary and return the secure URL."""
     if not settings.CLOUDINARY_CLOUD_NAME:
         return None  # Cloudinary not configured, fall back to local
